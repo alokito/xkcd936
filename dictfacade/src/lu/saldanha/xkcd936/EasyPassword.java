@@ -5,8 +5,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StreamTokenizer;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -28,12 +26,14 @@ public class EasyPassword {
 		String password = pwd.makePassword();
 		double bits = pwd.calcBits();
 		double hexlen = pwd.calcHexLen();
+		double alphanum = pwd.calcAlphaNumLen();
 		double randstrlen = pwd.calcRandLen();
 		int dictSize = pwd.getDictSize();
 		System.out.println("password: " + password);
 		System.out.println("constructed by picking "+pwd.getNumWords()+" from dictsize " + dictSize);
 		System.out.println("bits: " + bits);
 		System.out.println("equivalent to hex string of length: " + hexlen );
+		System.out.println("equivalent to alphanum string of length: " + alphanum );
 		System.out.println("equivalent to random string of length: " + randstrlen);
 	}
 
@@ -99,13 +99,25 @@ public class EasyPassword {
 	 * 
 	 */
 	public double calcHexLen() {
-		// TODO Auto-generated method stub
-		return 0;
+		double hexBitsPerChar = 4;// Math.log(16)/Math.log(2)
+		return calcBits()/hexBitsPerChar;
 	}
 	
+	public double calcAlphaNumLen() {
+		return calcLen(26 // letters 
+				+ 10 // digits 
+				);
+	}
 	public double calcRandLen() {
-		// TODO Auto-generated method stub
-		return 0;
+		return calcLen(26 // letters 
+				+ 10 // digits 
+				+ 10 // !@#$%^&*()
+				+ 5 //~`-=+_ 
+				);
+	}
+	public double calcLen(int numSymbols) {
+		double hexBitsPerChar = Math.log(numSymbols)/Math.log(2);
+		return calcBits()/hexBitsPerChar;
 	}
 
 	/**
@@ -114,8 +126,7 @@ public class EasyPassword {
 	 * 
 	 */
 	private double calcBits() {
-		// TODO Auto-generated method stub
-		return 0;
+		return (double)getNumWords() * Math.log(getDictSize())/Math.log(2);
 	}
 
 
@@ -142,7 +153,7 @@ public class EasyPassword {
 	}
 
 	private Map<String, Integer> wordHash = new HashMap<String, Integer>();
-	private int numWords;
+	private int numWords = 4;
 	
 	private boolean lowercase = true;
 
