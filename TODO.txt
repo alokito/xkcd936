@@ -1,0 +1,6 @@
+- Make GUI
+-- should automatically scan a "dict" folder for text files
+-- add checkboxes which allow user to select which text files to pick from
+-- add interface to configure other variables (number of words, lowercase all)
+-- add downloader for bible, war and peace, generic url (perhaps link to gutenberg project)
+ 
