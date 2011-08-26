@@ -1,4 +1,4 @@
-package lu.saldanha.xkcd936;
+package com.xkcd.n936;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;

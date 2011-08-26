@@ -1,8 +1,13 @@
 Password generator inspared by http://xkcd.com/936/
 
-Usage:
+Compile:
+cd src
+javac `find ./ | grep java`
 
-java lu.saldanha.xkcd936.EasyPasswordStats <big text file>
+Usage:
+	java com.xkcd.n936.MakePassword <big text file>
+
+It will make a password by picking 4 random words from the text file, and compute some stats.
 
 Other: 
 
