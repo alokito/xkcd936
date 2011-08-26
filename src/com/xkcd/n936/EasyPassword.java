@@ -21,8 +21,11 @@ public class EasyPassword {
 		String[]words = wordHash.keySet().toArray(new String[0]);
 		if (words.length > 0) {
 			String retval = "";
-			for (int i=0;i<getNumWords();i++)
+			for (int i=0;i<getNumWords();i++) {
+				if (retval.length() > 0 && isSpaceOutPassword())
+					retval += " ";
 				retval+=pickRandomWord(words);
+			}
 			return retval;
 		} else {
 			return null;
@@ -66,8 +69,6 @@ public class EasyPassword {
 		return wordHash.size();
 	}
 
-
-
 	/**
 	 * how many words should we pick for each password?
 	 */
@@ -90,9 +91,17 @@ public class EasyPassword {
 		return lowercase;
 	}
 
+	public void setSpaceOutPassword(boolean spaceOutPassword) {
+		this.spaceOutPassword = spaceOutPassword;
+	}
+	public boolean isSpaceOutPassword() {
+		return spaceOutPassword;
+	}
+
 	private Map<String, Integer> wordHash = new HashMap<String, Integer>();
 	private int numWords = 4;
 	
 	private boolean lowercase = true;
 
+	private boolean spaceOutPassword = true;
 }
