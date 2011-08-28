@@ -1,7 +1,9 @@
 package com.xkcd.n936.lib;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -49,7 +51,11 @@ public class EasyPassword {
 		FileInputStream fis = new FileInputStream(filename);
 		addWords(fis);
 	}
-	
+	public void addWords(File file) throws IOException {
+		FileInputStream fis = new FileInputStream(file);
+		addWords(fis);
+	}
+
 	public void addWords(InputStream fis) throws IOException {
 		BufferedReader r = new BufferedReader(new InputStreamReader(fis));
 		addWords(r);
@@ -72,6 +78,9 @@ public class EasyPassword {
 		}
 	}
 
+	public void clearDict() {
+		wordHash.clear();
+	}
 
 	/**
 	 * 
@@ -118,4 +127,5 @@ public class EasyPassword {
 	private boolean lowercase = true;
 
 	private boolean spaceOutPassword = true;
+
 }
