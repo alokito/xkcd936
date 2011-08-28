@@ -8,11 +8,16 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLDecoder;
+import java.util.Date;
+import java.util.StringTokenizer;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -37,6 +42,9 @@ public class EasyPasswordApp {
 	final private EasyPassword easyPassword = new EasyPassword();
 	final private JTextField passwordLabel = new JTextField();
 	final private JTextArea statsLabel = new JTextArea();
+	final private String KJV_BIBLE_URL = "http://www.gutenberg.org/ebooks/10.txt.utf8";
+	final private String WAR_AND_PEACE_URL = "http://www.gutenberg.org/ebooks/2600.txt.utf8";
+
 	private EasyPasswordApp() {
 		fileTable = new FileTableModel();
 		for (File file:scanForText()) {
@@ -106,6 +114,58 @@ public class EasyPasswordApp {
 		easyPassword.clearDict();
 		
 	}
+	
+	private Box getFileButtons() {
+		Box retBox = new Box(BoxLayout.X_AXIS);
+		retBox.add(new JLabel("Download Files:"));
+		addFileButton(retBox,"KJV Bible", KJV_BIBLE_URL, "kjv_bible.txt");
+		addFileButton(retBox,"War and Peace", WAR_AND_PEACE_URL, "war_and_peace.txt");
+		return retBox;
+	}
+	private void addFileButton(Box retBox, String label, final String durl, final String file) {
+		JButton kvjBible = new JButton(label);
+		kvjBible.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String target = getDictDir() + File.separator + file;
+				downloadUrl(durl, target);
+				fileTable.addFile(new File(target));
+			}
+		});
+		retBox.add(kvjBible);
+	}
+	private void downloadUrl(String urlString, String target) {
+		try
+	      {
+	          URL           url  = new URL(urlString);
+	          System.out.println("Opening connection to " + urlString + "...");
+	          URLConnection urlC = url.openConnection();
+	          // Copy resource to local file, use remote file
+	          // if no local file name specified
+	          InputStream is = url.openStream();
+	          // Print info about resource
+	          System.out.print("Copying resource (type: " + urlC.getContentType());
+	          Date date=new Date(urlC.getLastModified());
+	          System.out.println(", modified on: " + date.toLocaleString() + ")...");
+	          System.out.flush();
+	          FileOutputStream fos = new FileOutputStream(target);
+	          byte[] data = new byte[1024];
+	          int x=0;
+	          int count =0;
+	          while((x=is.read(data,0,1024))>=0)
+	          {
+	        	  fos.write(data,0,x);
+	        	  count += x;
+	          }
+	          is.close();
+	          fos.close();
+	          System.out.println(count + " byte(s) copied");
+	      }
+	      catch (MalformedURLException e)
+	      { System.err.println(e.toString()); }
+	      catch (IOException e)
+	      { System.err.println(e.toString()); }
+	}
 	private Box createConfigurationWidgets() {
 		JTable jTable = new JTable(fileTable);
 		
@@ -114,7 +174,7 @@ public class EasyPasswordApp {
 		filePanel.setLayout(new BorderLayout());
 		filePanel.add(new JLabel("Files (in "+getDictDir()+")"), BorderLayout.NORTH);
 		filePanel.add(jTable, BorderLayout.CENTER);
-
+		filePanel.add(getFileButtons(), BorderLayout.SOUTH);
 		JPanel optionsPanel = new JPanel();
 		optionsPanel.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
