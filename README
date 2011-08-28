@@ -1,11 +1,10 @@
 Password generator inspired by http://xkcd.com/936/
 
 Compile:
-cd src
-javac `find ./ | grep java`
+ant cli
 
 Usage:
-	java com.xkcd.n936.MakePassword <big text file>
+	java -jar xkcd936cli.jar <big text file>
 
 It will make a password by picking 4 random words from the text file, and compute some stats.
 

@@ -1,6 +1,9 @@
-package com.xkcd.n936;
+package com.xkcd.n936.cli;
 
 import java.io.IOException;
+
+import com.xkcd.n936.lib.EasyPassword;
+import com.xkcd.n936.lib.EasyPasswordStats;
 
 public class MakePassword {
 
@@ -12,6 +15,23 @@ public class MakePassword {
 	 * 
 	 */
 	public static final  void main(String [] argv) throws IOException {
+		if (argv.length == 0) {
+			System.err.println("Please list at least one file on the command line\n");
+			printUsage();
+		} else {
+			printPassword(argv);
+		}
+	}
+
+	private static void printUsage() {
+		System.err.println("Usage: java -jar xkcd936cli.jar <text file>+");
+		System.err.println("");
+		System.err.println("This program will read in text files on the command line,");
+		System.err.println("then pick words randomly to generate a password.");
+		System.err.println("For more info, see http://xkcd.com/936/.");
+	}
+
+	private static void printPassword(String[] argv) throws IOException {
 		EasyPassword pwd = new EasyPassword();
 		for (String filename : argv) { 
 			pwd.addWordsFromFile(filename);

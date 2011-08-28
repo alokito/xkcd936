@@ -1,4 +1,4 @@
-package com.xkcd.n936;
+package com.xkcd.n936.lib;
 
 /**
  * Calculate strength stats for an EasyPassword

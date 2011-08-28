@@ -1,4 +1,4 @@
-package com.xkcd.n936;
+package com.xkcd.n936.lib;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
