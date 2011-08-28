@@ -65,7 +65,6 @@ public class EasyPasswordApp {
 			}
 
 		});
-		
 		resultsPanel.add(gobutton,c);
 		c.gridwidth=1;
 		c.gridx=0;c.gridy =1;
@@ -84,6 +83,7 @@ public class EasyPasswordApp {
 		makeNewPassword();
 		frame.pack();
 		frame.setVisible(true);
+		
 	}
 	private void makeNewPassword() {
 		for (File file : fileTable.getSelectedFiles()) {
@@ -127,9 +127,15 @@ public class EasyPasswordApp {
 		kvjBible.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String target = getDictDir() + File.separator + file;
-				downloadUrl(durl, target);
-				fileTable.addFile(new File(target));
+				String dictDir  = getDictDir();
+				File dictFile = new File(dictDir);
+				if (dictFile.exists() || new File(dictDir).mkdirs()) {
+					String target = dictDir + File.separator + file;
+					downloadUrl(durl, target);
+					fileTable.addFile(new File(target));
+				} else {
+					JOptionPane.showMessageDialog(null,"Error: Could not create output dir " + dictDir);
+				}
 			}
 		});
 		retBox.add(kvjBible);

@@ -33,6 +33,19 @@
   	  	<fileset dir="${build}" includes="com/xkcd/n936/lib/**"/>
   	</jar>	
   </target>
+  <target name="swing" depends="compile">
+	  	<!-- Create the distribution directory -->
+	  	<mkdir dir="${dist}"/>
+	  	<!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
+	  	<jar jarfile="${dist}/xkcd936swing.jar">
+	  		<manifest>
+	  		      <attribute name="Main-Class"
+	  		            value="com.xkcd.n936.swing.EasyPasswordApp"/>
+	  		 </manifest>
+	  	  	<fileset dir="${build}" includes="com/xkcd/n936/swing/**"/>
+	  	  	<fileset dir="${build}" includes="com/xkcd/n936/lib/**"/>
+	  	</jar>	
+	  </target>
 
   <target name="clean"
         description="clean up" >
