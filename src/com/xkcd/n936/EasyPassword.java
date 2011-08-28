@@ -9,6 +9,18 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+/**
+ * This class accumulates words from either a file, inputstream or buffered reader, 
+ * and then makes passwords by picking words randomly.
+ * 
+ * Options:
+ * numWords: number of words to pick when making password
+ * lowercase: lowercase words when adding them to the dictionary
+ * space out password: add spaces between words when generating password (more readable)
+ * 
+ * @author alok
+ *
+ */
 public class EasyPassword {
 	private Random staticRandom = new Random();
 	

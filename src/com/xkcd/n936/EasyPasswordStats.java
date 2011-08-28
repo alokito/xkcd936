@@ -1,6 +1,10 @@
 package com.xkcd.n936;
 
-
+/**
+ * Calculate strength stats for an EasyPassword
+ * @author alok
+ *
+ */
 public class EasyPasswordStats {
 
 	/**
@@ -25,9 +29,14 @@ public class EasyPasswordStats {
 				+ 5 //~`-=+_ 
 				);
 	}
+	/**
+	 * 
+	 * @return length of equivalent string chosen from numSymbols given current num words and dict size.
+	 * 
+	 */
 	public static double calcLen(EasyPassword pass, int numSymbols) {
-		double hexBitsPerChar = Math.log(numSymbols)/Math.log(2);
-		return calcBits(pass)/hexBitsPerChar;
+		double bitsPerChar = Math.log(numSymbols)/Math.log(2);
+		return calcBits(pass)/bitsPerChar;
 	}
 
 	/**
