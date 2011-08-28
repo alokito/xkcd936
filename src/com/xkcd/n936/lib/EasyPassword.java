@@ -97,6 +97,8 @@ public class EasyPassword {
 	 * should all words be lowercased before adding to dict?
 	 */
 	public void setLowercase(boolean lowercase) {
+		if (wordHash.size() > 0)
+			throw new IllegalStateException("Cannot modify lowercase after words are added to the dictionary");
 		this.lowercase = lowercase;
 	}
 	public boolean isLowercase() {
