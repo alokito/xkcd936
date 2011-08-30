@@ -1,6 +1,7 @@
 package com.xkcd.n936.swing;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -17,7 +18,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLDecoder;
 import java.util.Date;
-import java.util.StringTokenizer;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -28,10 +28,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -107,12 +107,14 @@ public class EasyPasswordApp {
 		return resultsPanelOuter;
 	}
 	private void makeNewPassword() {
-		for (File file : fileTable.getSelectedFiles()) {
-			try {
-				easyPassword.addWords(file);
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+		if	(easyPassword.getDictSize() == 0) {
+			for (File file : fileTable.getSelectedFiles()) {
+				try {
+					easyPassword.addWords(file);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		}
 
@@ -195,14 +197,25 @@ public class EasyPasswordApp {
 	}
 	private Box createConfigurationWidgets() {
 		JTable jTable = new JTable(fileTable);
-		
+		jTable.getColumnModel().getColumn(0).setPreferredWidth(10);
+		jTable.getColumnModel().getColumn(1).setPreferredWidth(200);
 		jTable.setFillsViewportHeight(true);
 		JPanel filePanel = new JPanel();
+		filePanel.setBorder(BorderFactory.createTitledBorder("Files"));
 		filePanel.setLayout(new BorderLayout());
-		filePanel.add(new JLabel("Files (in "+getDictDir()+")"), BorderLayout.NORTH);
-		filePanel.add(jTable, BorderLayout.CENTER);
+		JPanel loadedPanel = new JPanel();
+		loadedPanel.add(new JLabel("Loaded from "));
+		JTextField textField =new JTextField(getDictDir());
+		textField.setEditable(false);
+		loadedPanel.add(textField);
+		filePanel.add(loadedPanel, BorderLayout.NORTH);
+		JScrollPane scrollpane = new JScrollPane(jTable);
+		scrollpane.setPreferredSize(new Dimension(0, 100));
+		filePanel.add(scrollpane, BorderLayout.CENTER);
 		filePanel.add(getFileButtons(), BorderLayout.SOUTH);
 		JPanel optionsPanel = new JPanel();
+		optionsPanel.setBorder(BorderFactory.createTitledBorder("Options"));
+
 		optionsPanel.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx=0;c.gridy =0;
