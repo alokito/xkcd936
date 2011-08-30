@@ -1,6 +1,7 @@
 package com.xkcd.n936.swing;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -56,14 +57,35 @@ public class EasyPasswordApp {
 		
 		JPanel resultsPanelOuter = createResultsWidgets();
 		
+		final JPanel introPanel = new JPanel();
+		introPanel.add(new JLabel("Generate easy to remember, hard to guess passwords. For details see "));
+		JTextField addrField = new JTextField("http://xkcd.com/936/");
+		addrField.setEditable(false);
+		introPanel.add(addrField);
+		JButton showBtn = new JButton("Show in Browser");
+		showBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					BrowserControl.getBrowserControl().displayURL("http://xkcd.com/936/");
+				} catch (IOException e1) {
+					JOptionPane.showMessageDialog(introPanel, e1);
+				}
+			}
+		});
+		introPanel.setBackground(Color.orange);
+		introPanel.add(showBtn);
+		
 		JPanel padding = new JPanel();
 		padding.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 		BorderLayout frameLayout = new BorderLayout();
 		frameLayout.setVgap(10);
 		padding.setLayout(frameLayout);
+		padding.add(introPanel,BorderLayout.NORTH);
 		padding.add(configurationPanel, BorderLayout.CENTER);
 		padding.add(resultsPanelOuter, BorderLayout.SOUTH);
 		JFrame frame = new JFrame();
+		frame.setTitle("Easy Password Generator");
 		frame.getContentPane().add(padding);
 		makeNewPassword();
 		frame.pack();
@@ -81,15 +103,26 @@ public class EasyPasswordApp {
 		BorderLayout borderLayout = new BorderLayout();
 		resultsPanelOuter.setLayout(borderLayout);
 		
-		JButton gobutton = new JButton("Make New Password!");
+		final JPanel buttonP = new JPanel();
+		final JButton gobutton = new JButton("Make New Password!");
 		gobutton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				makeNewPassword();
+				if (fileTable.getNumFiles() == 0) {
+					JTextArea msgArea = new JTextArea("The password generator picks words from text files.\n"+
+							"Please place text files in " + getDictDir() +"\n"+
+					"Or click one of the 'Download Files:' buttons to get some text files");
+					msgArea.setEditable(false);
+					msgArea.setBackground(buttonP.getBackground());
+					JOptionPane.showMessageDialog(gobutton, msgArea);
+				} else if (fileTable.getSelectedFiles().size() == 0) {
+					JOptionPane.showMessageDialog(gobutton, "Please select at least one file to generate passwords");
+				} else {
+					makeNewPassword();
+				}
 			}
 
 		});
-		JPanel buttonP = new JPanel();
 		buttonP.add(gobutton);
 		resultsPanelOuter.add(buttonP, BorderLayout.NORTH);
 		JPanel resultsPanel = new JPanel();

@@ -84,4 +84,8 @@ public class FileTableModel extends AbstractTableModel {
 		fireTableRowsDeleted(0, deleted);
 	}
 
+	public int getNumFiles() {
+		return files.size();
+	}
+
 }
