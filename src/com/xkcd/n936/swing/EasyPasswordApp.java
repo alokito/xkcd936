@@ -19,6 +19,7 @@ import java.net.URLDecoder;
 import java.util.Date;
 import java.util.StringTokenizer;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -30,6 +31,8 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -53,10 +56,27 @@ public class EasyPasswordApp {
 		passwordLabel.setEditable(false);
 		Box configurationPanel = createConfigurationWidgets();
 		
-		JPanel resultsPanel = new JPanel();
-		resultsPanel.setLayout(new GridBagLayout());
-		GridBagConstraints c = new GridBagConstraints();
-		c.gridx=0;c.gridy =0; c.gridwidth =2 ;
+		JPanel resultsPanelOuter = createResultsWidgets();
+		
+		JPanel padding = new JPanel();
+		padding.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+		BorderLayout frameLayout = new BorderLayout();
+		frameLayout.setVgap(10);
+		padding.setLayout(frameLayout);
+		padding.add(configurationPanel, BorderLayout.CENTER);
+		padding.add(resultsPanelOuter, BorderLayout.SOUTH);
+		JFrame frame = new JFrame();
+		frame.getContentPane().add(padding);
+		makeNewPassword();
+		frame.pack();
+		frame.setVisible(true);
+		
+	}
+	private JPanel createResultsWidgets() {
+		JPanel resultsPanelOuter = new JPanel();
+		BorderLayout borderLayout = new BorderLayout();
+		resultsPanelOuter.setLayout(borderLayout);
+		
 		JButton gobutton = new JButton("Make New Password!");
 		gobutton.addActionListener(new ActionListener() {
 			@Override
@@ -65,25 +85,26 @@ public class EasyPasswordApp {
 			}
 
 		});
-		resultsPanel.add(gobutton,c);
+		JPanel buttonP = new JPanel();
+		buttonP.add(gobutton);
+		resultsPanelOuter.add(buttonP, BorderLayout.NORTH);
+		JPanel resultsPanel = new JPanel();
+		TitledBorder title;
+		title = BorderFactory.createTitledBorder("Results");		
+		resultsPanel.setBorder(title);
+		resultsPanel.setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
 		c.gridwidth=1;
-		c.gridx=0;c.gridy =1;
+		c.gridx=0;c.gridy =0;
 		resultsPanel.add(new JLabel("Password"),c);
-		c.gridx=1;c.gridy =1;
+		c.gridx=1;c.gridy =0;
 		resultsPanel.add(passwordLabel,c);
-		c.gridx=0;c.gridy =2;
+		c.gridx=0;c.gridy =1;
 		resultsPanel.add(new JLabel("Stats"),c);
-		c.gridx=1;c.gridy =2;
+		c.gridx=1;c.gridy =1;
 		resultsPanel.add(statsLabel,c);
-		
-		JFrame frame = new JFrame();
-		frame.getContentPane().setLayout(new BorderLayout());
-		frame.add(configurationPanel, BorderLayout.CENTER);
-		frame.add(resultsPanel, BorderLayout.SOUTH);
-		makeNewPassword();
-		frame.pack();
-		frame.setVisible(true);
-		
+		resultsPanelOuter.add(resultsPanel,BorderLayout.CENTER);
+		return resultsPanelOuter;
 	}
 	private void makeNewPassword() {
 		for (File file : fileTable.getSelectedFiles()) {
