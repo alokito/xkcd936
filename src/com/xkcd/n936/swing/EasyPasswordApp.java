@@ -50,9 +50,7 @@ public class EasyPasswordApp {
 
 	private EasyPasswordApp() {
 		fileTable = new FileTableModel();
-		for (File file:scanForText()) {
-			fileTable.addFile(file);
-		}
+		scanDir();
 		passwordLabel.setEditable(false);
 		Box configurationPanel = createConfigurationWidgets();
 		
@@ -71,6 +69,12 @@ public class EasyPasswordApp {
 		frame.pack();
 		frame.setVisible(true);
 		
+	}
+	private void scanDir() {
+		fileTable.removeAll();
+		for (File file:scanForText()) {
+			fileTable.addFile(file);
+		}
 	}
 	private JPanel createResultsWidgets() {
 		JPanel resultsPanelOuter = new JPanel();
@@ -134,8 +138,6 @@ public class EasyPasswordApp {
 		"equivalent to random string of length: " + randstrlen;
 		passwordLabel.setText(password);
 		statsLabel.setText(stats);
-		easyPassword.clearDict();
-		
 	}
 	
 	private Box getFileButtons() {
@@ -156,6 +158,7 @@ public class EasyPasswordApp {
 					String target = dictDir + File.separator + file;
 					downloadUrl(durl, target);
 					fileTable.addFile(new File(target));
+					easyPassword.clearDict();
 				} else {
 					JOptionPane.showMessageDialog(null,"Error: Could not create output dir " + dictDir);
 				}
@@ -208,6 +211,15 @@ public class EasyPasswordApp {
 		JTextField textField =new JTextField(getDictDir());
 		textField.setEditable(false);
 		loadedPanel.add(textField);
+		JButton rescanButton = new JButton("Scan");
+		rescanButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				scanDir();
+				easyPassword.clearDict();
+			}
+		});
+		loadedPanel.add(rescanButton);
 		filePanel.add(loadedPanel, BorderLayout.NORTH);
 		JScrollPane scrollpane = new JScrollPane(jTable);
 		scrollpane.setPreferredSize(new Dimension(0, 100));
@@ -224,6 +236,7 @@ public class EasyPasswordApp {
 		lowercaseBox.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
+				easyPassword.clearDict();
 				easyPassword.setLowercase(lowercaseBox.isSelected());
 			}
 		});

@@ -77,4 +77,11 @@ public class FileTableModel extends AbstractTableModel {
 			return selected;
 		}
 	}
+
+	public void removeAll() {
+		int deleted = files.size();
+		files.clear();
+		fireTableRowsDeleted(0, deleted);
+	}
+
 }
