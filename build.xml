@@ -6,7 +6,40 @@
   <property name="src" location="src"/>
   <property name="build" location="build"/>
   <property name="dist"  location="dist"/>
+	<!-- libs only used for compiling -->
+  <property name="compile.lib"         value="compile_lib" />
 
+	<!-- some stuff for Mac OSX application bundles... -->
+	<!-- unfortunately, this only work on max os X right now. -->
+  <taskdef name="jarbundler"
+	                   classname="net.sourceforge.jarbundler.JarBundler">
+	 <classpath>
+	  <pathelement path="${compile.lib}/jarbundler-1.8.1.jar" />
+	  <pathelement path="${compile.lib}/xercesImpl.jar" />
+	  <pathelement path="${compile.lib}/xml-apis.jar" />
+	 </classpath>
+	</taskdef>
+	<target name="bundle" depends="swing"
+	 	description="Make a mac application bundle">
+	<delete   dir="bundle" />
+	  <mkdir   dir="bundle"/>
+	  <mkdir   dir="bundle/EasyPassword"/>
+		<jarbundler dir="bundle/EasyPassword"
+	                    name="Easy Password"
+	                    mainclass="com.xkcd.n936.swing.EasyPasswordApp" 
+	                    jars="dist/xkcd936swing.jar" 
+						icon="static/images/xkcd936.icns"
+						version="1.1.6r2"
+						aboutmenuname="Easy Password"
+						vmoptions="-Xmx500m -Dapple.awt.TextAntialiasing=false "
+						arguments="-b ."
+			/>
+		<mkdir   dir="bundle/EasyPassword/images"/>
+	  <copy  todir="bundle/EasyPassword/images">
+	  	<fileset dir="static/images"/>
+	  </copy>
+		<delete file="dist/xkcd936swing.jar"/>
+	</target>
   <target name="init">
     <!-- Create the time stamp -->
     <tstamp/>

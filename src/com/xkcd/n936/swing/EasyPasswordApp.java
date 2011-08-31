@@ -58,7 +58,7 @@ public class EasyPasswordApp {
 		JPanel resultsPanelOuter = createResultsWidgets();
 		
 		final JPanel introPanel = new JPanel();
-		introPanel.add(new JLabel("Generate easy to remember, hard to guess passwords. For details see "));
+		introPanel.add(new JLabel("Generate easy to remember, hard to guess passwords. Based on"));
 		JTextField addrField = new JTextField("http://xkcd.com/936/");
 		addrField.setEditable(false);
 		introPanel.add(addrField);
