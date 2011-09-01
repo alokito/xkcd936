@@ -27,7 +27,6 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -50,7 +49,7 @@ public class EasyPasswordApp  implements WindowListener {
 	final private JTextArea statsLabel = new JTextArea();
 	final private String KJV_BIBLE_URL = "http://www.gutenberg.org/ebooks/10.txt.utf8";
 	final private String WAR_AND_PEACE_URL = "http://www.gutenberg.org/ebooks/2600.txt.utf8";
-
+	final private DisposableJFrame frame;
 	private EasyPasswordApp() {
 		fileTable = new FileTableModel();
 		scanDir();
@@ -86,7 +85,8 @@ public class EasyPasswordApp  implements WindowListener {
 		padding.add(introPanel,BorderLayout.NORTH);
 		padding.add(configurationPanel, BorderLayout.CENTER);
 		padding.add(resultsPanelOuter, BorderLayout.SOUTH);
-		JFrame frame = new JFrame();
+		frame = new DisposableJFrame();
+		frame.attachCloseShortcut(padding);
 		frame.setTitle("Easy Password Generator");
 		frame.getContentPane().add(padding);
 		makeNewPassword();
