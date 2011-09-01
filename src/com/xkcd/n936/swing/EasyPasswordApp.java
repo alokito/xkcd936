@@ -20,7 +20,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLDecoder;
-import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -322,7 +321,8 @@ public class EasyPasswordApp  implements WindowListener {
 		return configurationPanel;
 	}
 	public static final void main(String []argv){
-		EasyPasswordApp app = new EasyPasswordApp();
+		// this will also open the window.
+		new EasyPasswordApp();
 	}
 	private File[] scanForText() {
 		String dir = getDictDir();

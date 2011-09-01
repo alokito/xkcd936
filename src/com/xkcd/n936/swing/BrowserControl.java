@@ -313,7 +313,7 @@ class MacBrowserControl extends BrowserControl {
 	public void displayURL(String url) throws IOException {
 //		System.out.println("Mac browser dislaying url " + url);
 		try {
-		Class fileMgr = Class.forName("com.apple.eio.FileManager");
+		Class<?> fileMgr = Class.forName("com.apple.eio.FileManager");
         Method openURL;
 			openURL = fileMgr.getDeclaredMethod("openURL",
 			   new Class[] {String.class});
