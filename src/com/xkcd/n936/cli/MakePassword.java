@@ -28,7 +28,7 @@ public class MakePassword {
 		System.err.println("");
 		System.err.println("This program will read in text files on the command line,");
 		System.err.println("then pick words randomly to generate a password.");
-		System.err.println("For more info, see http://xkcd.com/936/.");
+		System.err.println("For more info, see https://github.com/alokito/xkcd936/wiki.");
 	}
 
 	private static void printPassword(String[] argv) throws IOException {
