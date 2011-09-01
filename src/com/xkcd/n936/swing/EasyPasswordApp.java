@@ -192,6 +192,7 @@ public class EasyPasswordApp  implements WindowListener {
 				if (dictFile.exists() || new File(dictDir).mkdirs()) {
 					final String target = dictDir + File.separator + file;
 					kvjBible.setText("Downloading...");
+					kvjBible.setEnabled(false);
 					
 					SwingUtilities.invokeLater(new Runnable() {
 						@Override
@@ -201,6 +202,7 @@ public class EasyPasswordApp  implements WindowListener {
 								easyPassword.clearDict();
 							}
 							kvjBible.setText(label);
+							kvjBible.setEnabled(true);
 						}
 					});
 				} else {
