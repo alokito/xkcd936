@@ -33,6 +33,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -85,7 +86,6 @@ public class EasyPasswordApp  implements WindowListener {
 		padding.add(configurationPanel, BorderLayout.CENTER);
 		padding.add(resultsPanelOuter, BorderLayout.SOUTH);
 		frame = new DisposableJFrame();
-		frame.attachCloseShortcut(padding);
 		frame.setTitle("Easy Password Generator");
 		frame.getContentPane().add(padding);
 		makeNewPassword();
@@ -182,18 +182,27 @@ public class EasyPasswordApp  implements WindowListener {
 		addFileButton(retBox,"War and Peace", WAR_AND_PEACE_URL, "war_and_peace.txt");
 		return retBox;
 	}
-	private void addFileButton(Box retBox, String label, final String durl, final String file) {
-		JButton kvjBible = new JButton(label);
+	private void addFileButton(Box retBox, final String label, final String durl, final String file) {
+		final JButton kvjBible = new JButton(label);
 		kvjBible.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String dictDir  = getDictDir();
 				File dictFile = new File(dictDir);
 				if (dictFile.exists() || new File(dictDir).mkdirs()) {
-					String target = dictDir + File.separator + file;
-					downloadUrl(durl, target);
-					fileTable.addFile(new File(target));
-					easyPassword.clearDict();
+					final String target = dictDir + File.separator + file;
+					kvjBible.setText("Downloading...");
+					
+					SwingUtilities.invokeLater(new Runnable() {
+						@Override
+						public void run() {
+							if (downloadUrl(durl, target)) {
+								scanDir();
+								easyPassword.clearDict();
+							}
+							kvjBible.setText(label);
+						}
+					});
 				} else {
 					JOptionPane.showMessageDialog(null,"Error: Could not create output dir " + dictDir);
 				}
@@ -201,38 +210,46 @@ public class EasyPasswordApp  implements WindowListener {
 		});
 		retBox.add(kvjBible);
 	}
-	private void downloadUrl(String urlString, String target) {
-		try
-	      {
-	          URL           url  = new URL(urlString);
-	          System.out.println("Opening connection to " + urlString + "...");
-	          URLConnection urlC = url.openConnection();
-	          // Copy resource to local file, use remote file
-	          // if no local file name specified
-	          InputStream is = url.openStream();
-	          // Print info about resource
-	          System.out.print("Copying resource (type: " + urlC.getContentType());
-	          Date date=new Date(urlC.getLastModified());
-	          System.out.println(", modified on: " + date.toLocaleString() + ")...");
-	          System.out.flush();
-	          FileOutputStream fos = new FileOutputStream(target);
-	          byte[] data = new byte[1024];
-	          int x=0;
-	          int count =0;
-	          while((x=is.read(data,0,1024))>=0)
-	          {
-	        	  fos.write(data,0,x);
-	        	  count += x;
-	          }
-	          is.close();
-	          fos.close();
-	          System.out.println(count + " byte(s) copied");
-	      }
-	      catch (MalformedURLException e)
-	      { System.err.println(e.toString()); }
-	      catch (IOException e)
-	      { System.err.println(e.toString()); }
+	private boolean downloadUrl(final String urlString, final String target) {
+		doDownload(urlString,target);
+	    if (!downloadSuccessful)
+	    	JOptionPane.showMessageDialog(frame, "Download failed!\n" + downloadException.toString());
+	    return downloadSuccessful;
 	}
+	private boolean downloadSuccessful;
+	private Exception downloadException;
+	private boolean doDownload(String urlString, String target) {
+		downloadSuccessful = false;
+		try {
+			URL           url  = new URL(urlString);
+			System.out.println("Opening connection to " + urlString + "...");
+			URLConnection urlC = url.openConnection();
+			// Copy resource to local file, use remote file
+			// if no local file name specified
+			InputStream is = url.openStream();
+			// Print info about resource
+			System.out.print("Copying resource (type: " + urlC.getContentType());
+			System.out.flush();
+			FileOutputStream fos = new FileOutputStream(target);
+			byte[] data = new byte[1024];
+			int x=0;
+			int count =0;
+			while((x=is.read(data,0,1024))>=0)
+			{
+				fos.write(data,0,x);
+				count += x;
+			}
+			is.close();
+			fos.close();
+			System.out.println(count + " byte(s) copied");
+			downloadSuccessful = true;
+		} catch (Exception e) {
+			downloadException = e;
+		}
+		return downloadSuccessful;
+	}
+	
+	
 	private Box createConfigurationWidgets() {
 		JTable jTable = new JTable(fileTable);
 		jTable.getColumnModel().getColumn(0).setPreferredWidth(10);

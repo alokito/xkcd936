@@ -6,8 +6,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.KeyStroke;
 
 @SuppressWarnings("serial")
@@ -15,17 +17,19 @@ public class DisposableJFrame extends JFrame {
 	public DisposableJFrame() throws HeadlessException {
 		super();
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		closeAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+			     KeyEvent.VK_W, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+		
+		JMenu menu = new JMenu("File");
+		menu.add(closeAction);
+		JMenuBar bar = new JMenuBar();
+		bar.add(menu);
+		setJMenuBar(bar);
 	}
-	private final AbstractAction closeAction = new AbstractAction("Close Window") {
+	private final AbstractAction closeAction = new AbstractAction("Close") {
 		@Override public void actionPerformed(ActionEvent e) {
 			setVisible(false);
 			dispose();
 		}
 	};
-	private final KeyStroke closeKey = KeyStroke.getKeyStroke(
-				KeyEvent.VK_W, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
-	public void attachCloseShortcut(JPanel mainPanel) {
-		mainPanel.getInputMap().put(closeKey, "closeWindow");        
-		mainPanel.getActionMap().put("closeWindow", closeAction);
-	}
 }
