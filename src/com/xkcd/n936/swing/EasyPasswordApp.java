@@ -351,15 +351,19 @@ public class EasyPasswordApp  implements WindowListener {
 	}
 	private String getDictDir() {
 		URL fileURL = getCodeBase();
-		return URLtoFilePath(fileURL.getPath()+"/dict");
+		String path = fileURL.getPath();
+		if (path.endsWith("/EasyPassword.app/Contents/Resources/Java"))
+			path = path.substring(0, path.length() - 
+					"/EasyPassword.app/Contents/Resources/Java".length());
+		return URLtoFilePath(path+"/dict");
 	}
 	private URL codeBase = null;
 	/**
 	 * sometimes the location of the jar is not the location where
 	 * the plugins and coordiates can be found. This is particularly
 	 * the case with mac os X.I have added detection code in 
-	 * scanForPlugins that detects this and updates the codebase so 
-	 * that the coordinates settings will be done correctly.
+	 * getDictDir that detects this and updates the codebase so 
+	 * that the dict will be fetched correctly.
 	 */
 	public URL getCodeBase() {
 		if (codeBase != null) {

@@ -34,10 +34,7 @@
 						vmoptions="-Xmx500m -Dapple.awt.TextAntialiasing=false "
 						arguments="-b ."
 			/>
-		<mkdir   dir="bundle/EasyPassword/images"/>
-	  <copy  todir="bundle/EasyPassword/images">
-	  	<fileset dir="static/images"/>
-	  </copy>
+		<mkdir   dir="bundle/EasyPassword/dict"/>
 		<delete file="dist/xkcd936swing.jar"/>
 	</target>
   <target name="init">
