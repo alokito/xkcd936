@@ -25,12 +25,12 @@
 	  <mkdir   dir="bundle"/>
 	  <mkdir   dir="bundle/EasyPassword"/>
 		<jarbundler dir="bundle/EasyPassword"
-	                    name="Easy Password"
+	                    name="EasyPassword"
 	                    mainclass="com.xkcd.n936.swing.EasyPasswordApp" 
 	                    jars="dist/xkcd936swing.jar" 
 						icon="static/images/xkcd936.icns"
-						version="1.1.6r2"
-						aboutmenuname="Easy Password"
+						version="0.1"
+						aboutmenuname="EasyPassword"
 						vmoptions="-Xmx500m -Dapple.awt.TextAntialiasing=false "
 						arguments="-b ."
 			/>
@@ -85,5 +85,6 @@
     <!-- Delete the ${build} and ${dist} directory trees -->
     <delete dir="${build}"/>
     <delete dir="${dist}"/>
+    <delete dir="bundle"/>
   </target>
 </project>
