@@ -455,4 +455,10 @@ public class EasyPasswordApp  implements WindowListener {
 	public void windowClosed(WindowEvent e) {
 		System.exit(0);
 	}
+	public static String getWikiUrl() {
+		return "https://github.com/alokito/xkcd936/wiki";
+	}
+	public static String getVersionTag() {
+		return "0.1";
+	}
 }
