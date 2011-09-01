@@ -9,6 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -41,7 +43,7 @@ import com.xkcd.n936.lib.EasyPassword;
 import com.xkcd.n936.lib.EasyPasswordStats;
 
 
-public class EasyPasswordApp {
+public class EasyPasswordApp  implements WindowListener {
 	final private FileTableModel fileTable;
 	final private EasyPassword easyPassword = new EasyPassword();
 	final private JTextField passwordLabel = new JTextField();
@@ -89,6 +91,7 @@ public class EasyPasswordApp {
 		frame.getContentPane().add(padding);
 		makeNewPassword();
 		frame.pack();
+		frame.addWindowListener(this);
 		frame.setVisible(true);
 		
 	}
@@ -392,5 +395,41 @@ public class EasyPasswordApp {
 			e.printStackTrace();
 		}
 		return dir;
+	}
+	@Override
+	public void windowActivated(WindowEvent e) {
+		//nothing
+	}
+
+
+	@Override
+	public void windowClosing(WindowEvent e) {
+		//nothing
+	}
+
+
+	@Override
+	public void windowDeactivated(WindowEvent e) {
+		//nothing
+	}
+
+
+	@Override
+	public void windowDeiconified(WindowEvent e) {
+		//nothing
+	}
+
+
+	@Override
+	public void windowIconified(WindowEvent e) {
+		//nothing
+	}
+	@Override
+	public void windowOpened(WindowEvent e) {
+		//nothing
+	}
+	@Override
+	public void windowClosed(WindowEvent e) {
+		System.exit(0);
 	}
 }
