@@ -20,6 +20,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLDecoder;
+import java.util.Dictionary;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -257,6 +258,12 @@ public class EasyPasswordApp  implements WindowListener {
 		jTable.getColumnModel().getColumn(0).setPreferredWidth(10);
 		jTable.getColumnModel().getColumn(1).setPreferredWidth(200);
 		jTable.setFillsViewportHeight(true);
+		fileTable.addFileTableSelectionListener(new FileTableSelectionListenerI() {
+			@Override
+			public void selectionChanged() {
+				easyPassword.clearDict();
+			}
+		});
 		JPanel filePanel = new JPanel();
 		filePanel.setBorder(BorderFactory.createTitledBorder("Files"));
 		filePanel.setLayout(new BorderLayout());

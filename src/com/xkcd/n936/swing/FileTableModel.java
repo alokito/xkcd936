@@ -8,8 +8,15 @@ import javax.swing.table.AbstractTableModel;
 
 @SuppressWarnings("serial")
 public class FileTableModel extends AbstractTableModel {
+	private List<FileTableSelectionListenerI> listeners = new ArrayList<FileTableSelectionListenerI>();
+	
 	private List<SelectableFile> files = new ArrayList<SelectableFile>();
 	private String[] columnNames = new String[]{"Selected", "Filename"};
+	
+	public void addFileTableSelectionListener(FileTableSelectionListenerI listener) {
+		listeners.add(listener);
+	}
+	
 	@Override
 	public int getColumnCount() {
 		return 2;
@@ -31,6 +38,8 @@ public class FileTableModel extends AbstractTableModel {
 	public void addFile(File file) {
 		files.add(new SelectableFile(file, true));
 		fireTableRowsInserted(files.size()-1, files.size()-1);
+		for (FileTableSelectionListenerI listener: listeners) 
+			listener.selectionChanged();
 	}
 	public boolean isCellEditable(int row, int col) { 
 		return col == 0;
@@ -42,6 +51,8 @@ public class FileTableModel extends AbstractTableModel {
 		if (col == 0) {
 			files.get(row).setSelected((Boolean) value);
 			fireTableCellUpdated(row, col);
+			for (FileTableSelectionListenerI listener: listeners) 
+				listener.selectionChanged();
 		}
     }
 	@Override
@@ -82,6 +93,8 @@ public class FileTableModel extends AbstractTableModel {
 		int deleted = files.size();
 		files.clear();
 		fireTableRowsDeleted(0, deleted);
+		for (FileTableSelectionListenerI listener: listeners) 
+			listener.selectionChanged();
 	}
 
 	public int getNumFiles() {
