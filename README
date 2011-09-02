@@ -12,6 +12,8 @@ It will make a password by picking 4 random words from the text file, and comput
 
 For further documentation, see the wiki at https://github.com/alokito/xkcd936/wiki
 
+License:
+	The xkcd936 project is distributed under the MIT license. Please see the included LICENSE file.
 
 Other: 
 
