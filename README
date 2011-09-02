@@ -1,4 +1,5 @@
 Password generator inspired by http://xkcd.com/936/
+also informed by http://www.baekdal.com/tips/password-security-usability
 
 Compile:
 ant cli
