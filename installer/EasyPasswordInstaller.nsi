@@ -26,9 +26,9 @@
 ;Interface Settings
 
   !define MUI_ABORTWARNING
-	!define MUI_HEADERIMAGE "C:\temp\xkcd936\static\images\xkcd936.bmp"
+	!define MUI_HEADERIMAGE "C:\temp\xkcd936\static\images\xkcd936_2.bmp"
 	!define MUI_HEADERIMAGE_BITMAP_NOSTRETCH
-	!define MUI_HEADERIMAGE_BITMAP "C:\temp\xkcd936\static\images\xkcd936.bmp"
+	!define MUI_HEADERIMAGE_BITMAP "C:\temp\xkcd936\static\images\xkcd936_2.bmp"
 	!define MUI_ICON "C:\temp\xkcd936\static\images\setup.ico"
 	!define MUI_UNICON "C:\temp\xkcd936\static\images\setup.ico"
 
