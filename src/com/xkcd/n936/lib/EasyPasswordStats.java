@@ -18,12 +18,12 @@ public class EasyPasswordStats {
 	}
 	
 	public static double calcAlphaNumLen(EasyPassword pass) {
-		return calcLen(pass,26 // letters 
+		return calcLen(pass,26 + 26 // letters 
 				+ 10 // digits 
 				);
 	}
 	public static double calcRandLen(EasyPassword pass) {
-		return calcLen(pass, 26 // letters 
+		return calcLen(pass, 26 + 26 // letters 
 				+ 10 // digits 
 				+ 10 // !@#$%^&*()
 				+ 5 //~`-=+_ 
