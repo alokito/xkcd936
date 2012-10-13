@@ -1,0 +1,3 @@
+KJV Bible	http://cloud.github.com/downloads/alokito/xkcd936/kjv_bible.txt	kjv_bible.txt
+War and Peace	http://cloud.github.com/downloads/alokito/xkcd936/war_and_peace.txt	war_and_peace.txt
+Moby Dick	http://cloud.github.com/downloads/alokito/xkcd936/mobydick.txt	mobydick.txt

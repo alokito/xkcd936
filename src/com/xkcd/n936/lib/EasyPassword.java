@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -127,4 +128,37 @@ public class EasyPassword {
 
 	private boolean spaceOutPassword = true;
 
+	
+	
+
+	private static int[] parsedVals(String[] usedValues) {
+		int[]parsed = new int[usedValues.length];
+		for (int i = 0; i < usedValues.length; i++)
+			parsed[i] = Integer.parseInt(usedValues[i]);
+		return parsed;
+	}
+	private static boolean inArray(int value, int[] usedValues) {
+		for (int i = 0; i< usedValues.length; i++)
+			if (value == usedValues[i])
+				return true;
+		return false;
+	}
+	/**
+	   * Returns a string array consisting of all the integer values between two points
+	   * whose string representation is not in usedValues.
+	   *
+	   * @param startValue int The minimum allowed value (inclusive).
+	   * @param endValue int The maximum allowed valued (inclusive).
+	   * @param usedValues String[] The String representation of the used integers, or null.
+	   * @return String[] The String representation of the available integers.
+	   */
+	public static String[] findAvialable(int startValue, int endValue, String[] usedValues) {
+	    ArrayList<String> values = new ArrayList<String>();
+	    int[] usedInts = parsedVals(usedValues);
+	    for (int i = startValue; i < endValue; i++) {
+	    	if (!inArray(i, usedInts))
+	    		values.add("" + i);
+	    }
+	    return values.toArray(new String[0]);
+	}
 }

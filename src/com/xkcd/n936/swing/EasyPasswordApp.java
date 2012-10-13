@@ -11,16 +11,18 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLDecoder;
-import java.util.Dictionary;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -48,8 +50,8 @@ public class EasyPasswordApp  implements WindowListener {
 	final private EasyPassword easyPassword = new EasyPassword();
 	final private JTextField passwordLabel = new JTextField();
 	final private JTextArea statsLabel = new JTextArea();
-	final private String KJV_BIBLE_URL = "http://www.gutenberg.org/ebooks/10.txt.utf8";
-	final private String WAR_AND_PEACE_URL = "http://www.gutenberg.org/ebooks/2600.txt.utf8";
+	final private String KJV_BIBLE_URL = "http://www.gutenberg.org/ebooks/10.txt.utf-8";
+	final private String WAR_AND_PEACE_URL = "http://www.gutenberg.org/ebooks/2600.txt.utf-8";
 	final private DisposableJFrame frame;
 	private EasyPasswordApp() {
 		fileTable = new FileTableModel();
@@ -175,12 +177,34 @@ public class EasyPasswordApp  implements WindowListener {
 		passwordLabel.setText(password);
 		statsLabel.setText(stats);
 	}
-	
+	private int addBooksFileLinks(Box retBox) {
+		int numAdded = 0;
+		try {
+			String booksPath  = getBooksFile();
+			File booksFile = new File(booksPath);
+			if (booksFile.exists()) {
+				FileInputStream fis = new FileInputStream(booksFile);
+				BufferedReader r = new BufferedReader(new InputStreamReader(fis));
+				String lineItem;
+			    while ((lineItem = r.readLine()) != null) {
+			    	String[] options = lineItem.split("\t");
+			    	addFileButton(retBox, options[0], options[1], options[2]);
+			    	numAdded++;
+			    }  
+				
+			}
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this.frame, e);
+		}
+		return numAdded;
+	}
 	private Box getFileButtons() {
 		Box retBox = new Box(BoxLayout.X_AXIS);
 		retBox.add(new JLabel("Download Files:"));
-		addFileButton(retBox,"KJV Bible", KJV_BIBLE_URL, "kjv_bible.txt");
-		addFileButton(retBox,"War and Peace", WAR_AND_PEACE_URL, "war_and_peace.txt");
+		if (addBooksFileLinks(retBox) == 0) {
+			addFileButton(retBox,"KJV Bible", KJV_BIBLE_URL, "kjv_bible.txt");
+			addFileButton(retBox,"War and Peace", WAR_AND_PEACE_URL, "war_and_peace.txt");
+		}
 		return retBox;
 	}
 	private void addFileButton(Box retBox, final String label, final String durl, final String file) {
@@ -357,12 +381,20 @@ public class EasyPasswordApp  implements WindowListener {
 		return (list == null)?new File[0]:list;
 	}
 	private String getDictDir() {
+		String path = getCodebasePath();
+		return URLtoFilePath(path+"dict");
+	}
+	private String getCodebasePath() {
 		URL fileURL = getCodeBase();
 		String path = fileURL.getPath();
 		if (path.endsWith("/EasyPassword.app/Contents/Resources/Java"))
 			path = path.substring(0, path.length() - 
 					"/EasyPassword.app/Contents/Resources/Java".length());
-		return URLtoFilePath(path+"/dict");
+		return path;
+	}
+	private String getBooksFile() {
+		String path = getCodebasePath();
+		return URLtoFilePath(path+"books.txt");
 	}
 	private URL codeBase = null;
 	/**
