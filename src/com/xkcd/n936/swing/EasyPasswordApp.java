@@ -50,8 +50,8 @@ public class EasyPasswordApp  implements WindowListener {
 	final private EasyPassword easyPassword = new EasyPassword();
 	final private JTextField passwordLabel = new JTextField();
 	final private JTextArea statsLabel = new JTextArea();
-	final private String KJV_BIBLE_URL = "http://www.gutenberg.org/ebooks/10.txt.utf-8";
-	final private String WAR_AND_PEACE_URL = "http://www.gutenberg.org/ebooks/2600.txt.utf-8";
+	final private String KJV_BIBLE_URL = "http://cloud.github.com/downloads/alokito/xkcd936/kjv_bible.txt";
+	final private String WAR_AND_PEACE_URL = "http://cloud.github.com/downloads/alokito/xkcd936/war_and_peace.txt";
 	final private DisposableJFrame frame;
 	private EasyPasswordApp() {
 		fileTable = new FileTableModel();
