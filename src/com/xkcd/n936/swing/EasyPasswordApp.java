@@ -390,7 +390,7 @@ public class EasyPasswordApp  implements WindowListener {
 		if (path.endsWith("/EasyPassword.app/Contents/Resources/Java"))
 			path = path.substring(0, path.length() - 
 					"/EasyPassword.app/Contents/Resources/Java".length());
-		return path;
+		return path.endsWith(""+File.separator)?path:path+File.separator;
 	}
 	private String getBooksFile() {
 		String path = getCodebasePath();

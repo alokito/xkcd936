@@ -35,6 +35,7 @@
 						arguments="-b ."
 			/>
 		<mkdir   dir="bundle/EasyPassword/dict"/>
+		<copy file="books.txt"  tofile="bundle/EasyPassword/books.txt"/>
 		<delete file="dist/xkcd936swing.jar"/>
 	</target>
   <target name="init">

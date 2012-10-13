@@ -16,6 +16,13 @@ For further documentation, see the wiki at https://github.com/alokito/xkcd936/wi
 License:
 	The xkcd936 project is distributed under the MIT license. Please see the included LICENSE file.
 
+Distribute:
+	CLI version: ant cli
+	Swing versio: ant swing
+	Mac OSX bundle: ant bundle (on mac only)
+	Windows: need NSIS (windows only)
+
+
 Other: 
 
 for further amusement, check out other github projects inspired by xkcd:
